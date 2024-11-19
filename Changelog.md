@@ -1,3 +1,22 @@
+### 1.0
+* dnd5e v4 comptible.
+* requires foundry v12.
+* Removed character sheet filter since all of the newever versions have it already.
+  - Actor disposition colours works
+  - Alternative Advantage works.
+  - Ammor recovery works.
+  - Ammo selector not required as is configurable in dnd5e rolls. (Just not as pretty).
+  - Auto roll hit points updated for dnd5e v4 and summoned tokens.
+  - Better scroll creation removed since in dnd5e v4 includes all of the required data.
+  - Clean Rolls not required as dnd5e now does a fine job of dealing with extra pluses.
+  - Collapsible inverntory sections works.
+  - Containter Helper: Fix for removing dropped items when the item is a consumable.
+  - Dynamic ring works
+  - Item Rarity colours works.
+  - Silent Initiative works.
+  - Template Preview works.
+
+
 ### 0.40
 * Incorporate change for not prompting to manually roll hit points when auto rolling unlinked token hit points.
 * A few little clean-ups

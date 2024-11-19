@@ -59,5 +59,7 @@
   "dnd5e-scriptlets.EnableTokenDynamicRing.Name": "Enable Token Dynamic Ring",
   "dnd5e-scriptlets.EnableTokenDynamicRing.Hint": "When a token is placed on the canvas set the token dynamic ring enabled",
   "dnd5e-scriptlets.EnableTokenDynamicRingColour.Name": "Token Dynamic Ring Colour",
-  "dnd5e-scriptlets.EnableTokenDynamicRingBackgroundColour.Name": "Token Dynamic Ring Background Colour"
+  "dnd5e-scriptlets.EnableTokenDynamicRingBackgroundColour.Name": "Token Dynamic Ring Background Colour",
+  "dnd5e-scriptlets.TemplatePreview.Name": "Allow previewing of templates",
+  "dnd5e-scriptlets.TemplatePreview.Hint": "Add an option to template controls (left sidebar - bullseye) to allow previewing a particular template"
 }

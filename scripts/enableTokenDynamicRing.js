@@ -9,15 +9,7 @@ export function setupEnableTokenDynamicRing() {
     }
     const backgroundColor = game.settings.get("dnd5e-scriptlets", "EnableTokenDynamicRingBackgroundColour");
     if (game.settings.get("dnd5e-scriptlets", "EnableTokenDynamicRing") === false) return;
-    if (game.release.generation < 12) {
-      if (ringColor !== "None" && !foundry.utils.getProperty(tokenDocument, "flags.dnd5e.tokenRing.colors.ring")) {
-        tokenDocument.updateSource({"flags.dnd5e.tokenRing.colors.ring": `${ringColor}`});
-      }
-      if (backgroundColor !== "None" && !foundry.utils.getProperty(tokenDocument, "flags.dnd5e.ring.colors.background")) {
-        tokenDocument.updateSource({"flags.dnd5e.tokenRing.colors.background": `${getHexColor(backgroundColor)}`});
-      }
-      tokenDocument.updateSource({ "flags.dnd5e.tokenRing.enabled": true })
-    } else {
+
       const options = {
         ring: {
           enabled: true,
@@ -30,7 +22,6 @@ export function setupEnableTokenDynamicRing() {
         foundry.utils.setProperty(options, "ring.colors.background", `${getHexColor(backgroundColor)}`);
       }
       tokenDocument.updateSource(options)
-    }
   });
 }
 

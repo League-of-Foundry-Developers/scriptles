@@ -1,26 +1,6 @@
 import { geti18nOptions } from "./module.js";
 
 export function registerSettings() {
-  game.settings.register("dnd5e-scriptlets", "cleanRolls", {
-    name: game.i18n.localize("dnd5e-scriptlets.CleanRolls.Name"),
-    hint: game.i18n.localize("dnd5e-scriptlets.CleanRolls.Hint"),
-    scope: "world",
-    default: false,
-    config: true,
-    type: Boolean,
-    requiresReload: true
-  });
-
-  game.settings.register("dnd5e-scriptlets", "lukasSheetFilter", {
-    name: game.i18n.localize("dnd5e-scriptlets.LukasSheetFilter.Name"),
-    hint: game.i18n.localize("dnd5e-scriptlets.LukasSheetFilter.Hint"),
-    scope: "world",
-    default: false,
-    config: true,
-    type: Boolean,
-    requiresReload: false
-  });
-
   game.settings.register("dnd5e-scriptlets", "lukasItemRarityColors", {
     name: game.i18n.localize("dnd5e-scriptlets.LukasItemRarityColors.Name"),
     hint: game.i18n.localize("dnd5e-scriptlets.LukasItemRarityColors.Hint"),
@@ -38,17 +18,6 @@ export function registerSettings() {
     default: false,
     config: true,
     type: Boolean,
-    requiresReload: false
-  });
-
-  game.settings.register("dnd5e-scriptlets", "ammoSelector", {
-    name: game.i18n.localize("dnd5e-scriptlets.AmmoSelector.Name"),
-    hint: game.i18n.localize("dnd5e-scriptlets.AmmoSelector.Hint"),
-    scope: "client",
-    default: "off",
-    type: String,
-    config: true,
-    choices: geti18nOptions("AmmoSelectorOptions"),
     requiresReload: false
   });
 
@@ -158,16 +127,6 @@ export function registerSettings() {
     requiresReload: false
   });
 
-  game.settings.register("dnd5e-scriptlets", "BetterScrollCreation", {
-    name: game.i18n.localize("dnd5e-scriptlets.BetterScrollCreation.Name"),
-    hint: game.i18n.localize("dnd5e-scriptlets.BetterScrollCreation.Hint"),
-    scope: "world",
-    type: Boolean,
-    default: false,
-    config: true,
-    requiresReload: false
-  });
-
   game.settings.register("dnd5e-scriptlets", "griddedGridless", {
     name: game.i18n.localize("dnd5e-scriptlets.GriddedGridless.Name"),
     hint: game.i18n.localize("dnd5e-scriptlets.GriddedGridless.Hint"),
@@ -255,6 +214,7 @@ export function registerSettings() {
 
   game.settings.register("dnd5e-scriptlets", "TemplatePreview", {
     name: game.i18n.localize("dnd5e-scriptlets.TemplatePreview.Name"),
+    name: game.i18n.localize("dnd5e-scriptlets.TemplatePreview.Hint"),
     scope: "world",
     type: Boolean,
     default: false,

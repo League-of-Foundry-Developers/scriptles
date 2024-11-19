@@ -11,48 +11,75 @@ export function setupAutoItemRecharge() {
       const turn = (combat.turn + combat.turns.length - 1) % combat.turns.length;
       actor = combat.turns[turn]?.actor;
     }
-    let target;
-    for (const item of actor.items) {
-      const recharge = item.system.recharge;
-      if (!recharge?.value || recharge?.charged) continue;
-      if (["silent", "whisper"].includes(rechargeSetting)) Hooks.once(`${systemString}.preRollRecharge`, (item, rollConfig) => {
-        rollConfig.chatMessage = false;
-        target = rollConfig.target;
-        return true;
-      });
-      if (rechargeSetting === "whisper") Hooks.once(`${systemString}.rollRecharge`, (item, roll) => {
-        const success = roll.total >= target;
-        const resultMessage = game.i18n.localize(`${localizeHeader}.ItemRecharge${success ? "Success" : "Failure"}`);
-        const flavor = `${localizeHeader}.ItemRechargeCheck`;
-        roll.toMessage({
-          flavor: `${game.i18n.format(flavor, { name: item.name })} - ${resultMessage}`,
-            speaker: ChatMessage.getSpeaker({ actor: item.actor, token: item.actor.token })
-        },
-          { rollMode: "gmroll" }
-        );
-      });
-      await item.rollRecharge();
-    }
+    doItemRecharges(actor, rechargeSetting);
     return true;
   });
+
   Hooks.on("createCombatant", async function (combatant, options, user) {
     const rechargeSetting = game.settings.get("dnd5e-scriptlets", "autoItemRecharge");
     if ([undefined, false, "off"].includes(rechargeSetting)) return;
     if (!game.users?.activeGM?.isSelf || combatant?.defeated) return;
     const actor = combatant.actor;
-    if (!actor) return;
-    for (const item of actor.items) {
-      const recharge = item.system.recharge;
-      if (!recharge?.value || recharge?.charged) continue;
-      await item.update({ "system.recharge.charged": true });
-      const resultMessage = game.i18n.localize(`${localizeHeader}.ItemRecharge${ "Success"}`);
-      const contentLabel = `${localizeHeader}.ItemRechargeCheck`;
-      ChatMessage.create({
-        user: game.user.id,
-        content: `${ game.i18n.format(contentLabel, { name: item.name }) } - ${ resultMessage }`,
-        speaker: ChatMessage.getSpeaker({ actor: item.actor, token: item.actor.token }),
-        whisper: [game.user.id],
-      });
-    }
+    doItemRecharges(actor, rechargeSetting);
   });
+}
+async function doItemRecharges(actor, rechargeSetting) {
+  for (const item of actor.items) {
+    let needsRecharge = false;
+    const recovery = item.system.uses?.recovery;
+    if (item.system.uses?.value < item.system.uses?.max && recovery?.length > 0) {
+      for (let profile of recovery) {
+        if (profile.period === "recharge") {
+          needsRecharge = true;
+          break
+        }
+      }
+    }
+    if (needsRecharge) doSingleRecharge(item, rechargeSetting);
+    for (let activity of item.system.activities) {
+      if (activity.uses?.value >= activity.uses?.max) continue;
+      const recovery = activity.uses?.recovery;
+      needsRecharge = false;
+      if (!recovery || recovery.length === 0) continue;
+      needsRecharge = false;
+      for (let profile of recovery) {
+        if (profile.period === "recharge") {
+          needsRecharge = true;
+          break
+        }
+      }
+      if (needsRecharge) doSingleRecharge(activity, rechargeSetting);
+    }
+  }
+}
+
+async function doSingleRecharge(itemOrActivity, rechargeSetting) {
+  if (["silent", "whisper"].includes(rechargeSetting)) {
+    // rollRecharge ignores changes made to message.create in the preRollRechargeV2 hook
+    Hooks.once(`${systemString}.preRollRecharge`, (itemOrActivity, hookdData) => {
+      hookdData.chatMessage = false;
+      return true;
+    });
+    Hooks.once(`${systemString}.preRollRechargeV2`, (config, dialog, message) => {
+      message.create = false;
+      if(config.subject.actor.type === "npc") message.rollMode = "blindroll";
+      return true;
+    });
+  }
+  if (rechargeSetting === "whisper")
+    Hooks.once(`${systemString}.rollRechargeV2`, (rolls, options) => {
+      const success = rolls.reduce((result, r) => result ||= r.isSuccess, false);
+      // const flavor = `${localizeHeader}.ItemRechargeCheck`;
+      const flavor = game.i18n.format("DND5E.ItemRechargeCheck", {
+        name: itemOrActivity.name,
+        result: game.i18n.localize(`DND5E.ItemRecharge${success ? "Success" : "Failure"}`)
+      });
+      rolls[0].toMessage({
+        flavor,
+        speaker: ChatMessage.getSpeaker({ actor: itemOrActivity.actor, token: itemOrActivity.actor.token })
+      },
+        { rollMode: "gmroll" }
+      );
+    });
+  await itemOrActivity.system?.uses?.rollRecharge() ?? itemOrActivity.uses?.rollRecharge();
 }

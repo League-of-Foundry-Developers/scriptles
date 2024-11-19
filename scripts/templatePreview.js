@@ -7,7 +7,7 @@ export function setupTemplatePreview() {
       let i = token.tools.length;
       token.tools.splice(i, 0, {
         name: "templatePreview",
-        title: game.i18n.localize("dnd5e-scriptlets.templatePreview.Name"),
+        title: game.i18n.localize("dnd5e-scriptlets.TemplatePreview.Name"),
         icon: "fas fa-bullseye",
         visible: true,
         onClick: () => {
