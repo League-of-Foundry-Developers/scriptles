@@ -1,20 +1,29 @@
-### 1.0
-* dnd5e v4 comptible.
+### 1.0.1
+* Fix for OperatorTerm deprecation warning in alternate advantage.
+* Switch to rollAttackV2 in ammo recovery to remove deprecation warning.
+* Auto item removal now works with tidy sheets as well as dnd5e sheets.
+* Fix for item recharge failing when there are no activities on an item
+
+### 1.0.0
+* dnd5e v4 compatible.
 * requires foundry v12.
-* Removed character sheet filter since all of the newever versions have it already.
+* Removed character sheet filter since all of the newer versions have it already.
   - Actor disposition colours works
   - Alternative Advantage works.
   - Ammor recovery works.
   - Ammo selector not required as is configurable in dnd5e rolls. (Just not as pretty).
   - Auto roll hit points updated for dnd5e v4 and summoned tokens.
-  - Better scroll creation removed since in dnd5e v4 includes all of the required data.
+  - Auto roll recharge now also recharges activities, as well as items.
+  - Better scroll creation removed since dnd5e v4 includes all of the required data.
   - Clean Rolls not required as dnd5e now does a fine job of dealing with extra pluses.
-  - Collapsible inverntory sections works.
-  - Containter Helper: Fix for removing dropped items when the item is a consumable.
+  - Collapsible inventory sections works.
+  - Container Helper: Fix for removing dropped items when the item is a consumable.
   - Dynamic ring works
   - Item Rarity colours works.
+  - Legendary recharge works.
   - Silent Initiative works.
   - Template Preview works.
+  - Token resizer works.
 
 
 ### 0.40

@@ -36,7 +36,7 @@ async function doItemRecharges(actor, rechargeSetting) {
       }
     }
     if (needsRecharge) doSingleRecharge(item, rechargeSetting);
-    for (let activity of item.system.activities) {
+    if (item.system.acitvities) for (let activity of item.system.activities) {
       if (activity.uses?.value >= activity.uses?.max) continue;
       const recovery = activity.uses?.recovery;
       needsRecharge = false;

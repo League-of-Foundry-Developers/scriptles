@@ -1,33 +1,34 @@
-import { socketlibSocket } from "./GMAction.js"; 
+import { socketlibSocket } from "./GMAction.js";
 
 import { systemString } from "./module.js";
 export function setupAmmoRecovery() {
-  Hooks.on(`${systemString}.rollAttack`, ammoUsage);
+  Hooks.on(`${systemString}.rollAttackV2`, ammoUsage2);
   Hooks.on("deleteCombat", restoreAmmo);
-  globalThis.dnd5eScriptlets.api =  foundry.utils.mergeObject(globalThis.dnd5eScriptlets.api, {
-    restoreAmmoActor, 
+
+  globalThis.dnd5eScriptlets.api = foundry.utils.mergeObject(globalThis.dnd5eScriptlets.api, {
+    restoreAmmoActor,
     restoreAmmoActors
   });
 }
 
-export function ammoUsage(item, roll, ammoUpdates) {
+export function ammoUsage2(rolls, hookData) {
   try {
+    if (!hookData.ammoUpdate) return;
     if (game.settings.get("dnd5e-scriptlets", "ammoTracker") !== true) return;
-    const actor = item.parent;
+    const actor = hookData.subject.actor;
+    if (!actor) return;
     const storedQuantities = foundry.utils.duplicate(foundry.utils.getProperty(actor, "flags.dnd5e-scriptlets.ammoQuantities") ?? {});
-    if (ammoUpdates) {
-      for (let ammoUpdate of ammoUpdates) {
-        const ammoItem = actor.items.get(ammoUpdate._id);
-        if (!ammoItem) continue;
-        const ammoUsed = ammoItem.system.quantity - ammoUpdate["system.quantity"];
-        if (ammoUsed > 0) storedQuantities[ammoUpdate._id] = ammoUsed + (storedQuantities[ammoUpdate._id] ?? 0);
-      }
-      actor.setFlag("dnd5e-scriptlets", "ammoQuantities", storedQuantities);
-    }
+    const ammoUpdate = hookData.ammoUpdate;
+    const ammoItem = actor.items.get(ammoUpdate.id);
+    if (!ammoItem) return;
+    const ammoUsed = ammoItem.system.quantity - ammoUpdate["quantity"];
+    if (ammoUsed > 0) storedQuantities[ammoUpdate.id] = ammoUsed + (storedQuantities[ammoUpdate.id] ?? 0);
+    actor.setFlag("dnd5e-scriptlets", "ammoQuantities", storedQuantities);
   } finally {
     return true;
   }
 }
+
 export function restoreAmmoActor(actor) {
   if (!actor) return;
   const storedQuantities = foundry.utils.getProperty(actor, "flags.dnd5e-scriptlets.ammoQuantities");
@@ -45,7 +46,7 @@ export function restoreAmmoActor(actor) {
       messages.push(`Recovered ${Math.floor(storedQuantities[itemId] / 2)} ${item.name}`);
     }
   }
-  socketlibSocket.executeAsGM("unsetFlag", actor.uuid, "dnd5e-scriptlets", "ammoQuantities") 
+  socketlibSocket.executeAsGM("unsetFlag", actor.uuid, "dnd5e-scriptlets", "ammoQuantities")
     .then(() => { socketlibSocket.executeAsGM("updateActorItems", actor.uuid, updates) })
     .then(() => {
       if (game.settings.get("dnd5e-scriptlets", "ammoRecoveryMessage") && messages.length) ChatMessage.create({

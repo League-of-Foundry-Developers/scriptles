@@ -28,7 +28,7 @@ function configureAdvantage(wrapped) {
     d20.modifiers = d20.modifiers?.filter(s => s !== "kh");
     d20.number = 1;
     if (!d20.options.hasAdvantage) {
-      this.terms.push(new OperatorTerm({ operator: "+", options: { isAdvantageTerm: true } }));
+      this.terms.push(new foundry.dice.terms.OperatorTerm({ operator: "+", options: { isAdvantageTerm: true } }));
       const extraTerms = new Roll(advantageQuantum, this.data).terms;
       for (let term of extraTerms) term.options.isAdvantageTerm = true;
       this.terms = this.terms.concat(extraTerms)
@@ -40,7 +40,7 @@ function configureAdvantage(wrapped) {
     d20.modifiers = d20.modifiers?.filter(s => s !== "kl");
     d20.number = 1;
     if (!d20.options.hasDisadvantage) {
-      this.terms.push(new OperatorTerm({ operator: "-", options: { isDisadvantageTerm: true } }));
+      this.terms.push(new foundry.dice.terms.OperatorTerm({ operator: "-", options: { isDisadvantageTerm: true } }));
       const extraTerms = new Roll(advantageQuantum, this.data).terms;
       for (let term of extraTerms) term.options.isDisadvantageTerm = true;
       this.terms = this.terms.concat(extraTerms)

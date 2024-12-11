@@ -1,5 +1,6 @@
 ![](https://img.shields.io/badge/Foundry-v10-informational)
 ![](https://img.shields.io/badge/Foundry-v11-informational)
+![](https://img.shields.io/badge/Foundry-v12-informational)
 ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fdnd5e-scriptlets&colorB=4aa94a)
 
 Discord <a href="https://discord.gg/Xd4NEvw5d7"><img src="https://img.shields.io/discord/915186263609454632?logo=discord" alt="chat on Discord"></a>
@@ -9,6 +10,8 @@ Discord <a href="https://discord.gg/Xd4NEvw5d7"><img src="https://img.shields.io
 
 # DND5E Scriptlets
 This module provides a few QOL features for dnd5e that don't really fit anywhere else.
+
+This branch is v4 compatible
 
 ## Clean Rolls
 When enabled the roll formulas with "+ +" "+ -" should be converted to a single "+" or "-". Requires libwrapper.
