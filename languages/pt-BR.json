@@ -59,5 +59,7 @@
   "dnd5e-scriptlets.EnableTokenDynamicRing.Name": "Habilitar Anel Dinâmico de Token",
   "dnd5e-scriptlets.EnableTokenDynamicRing.Hint": "Quando um token é colocado na cena, habilita a configuração do anel dinâmico de token.",
   "dnd5e-scriptlets.EnableTokenDynamicRingColour.Name": "Cor do Anel Dinâmico de Token",
-  "dnd5e-scriptlets.EnableTokenDynamicRingBackgroundColour.Name": "Cor de Fundo do Anel Dinâmico de Token"
+  "dnd5e-scriptlets.EnableTokenDynamicRingBackgroundColour.Name": "Cor de Fundo do Anel Dinâmico de Token",
+  "dnd5e-scriptlets.TemplatePreview.Name": "Permitir Visualização de Modelos",
+  "dnd5e-scriptlets.TemplatePreview.Hint": "Adiciona uma opção aos controles de modelo (barra lateral esquerda - alvo) para permitir a visualização de um modelo específico."
 }
